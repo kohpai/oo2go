@@ -3,8 +3,8 @@ package course
 import (
 	"fmt"
 
-	"github.com/kohpai/oo2go/model/common"
-	rs "github.com/kohpai/oo2go/model/rankedstudent"
+	"github.com/kohpai/oo2go/common"
+	rs "github.com/kohpai/oo2go/rankedstudent"
 )
 
 type RankCount map[int]int

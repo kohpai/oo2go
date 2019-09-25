@@ -3,7 +3,7 @@ package applystrategy
 import (
 	"container/heap"
 
-	"github.com/kohpai/oo2go/model/common"
+	"github.com/kohpai/oo2go/common"
 )
 
 type AllowAllStrategy struct {

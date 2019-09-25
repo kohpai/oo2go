@@ -1,7 +1,7 @@
 package pq
 
 import (
-	"github.com/kohpai/oo2go/model/common"
+	"github.com/kohpai/oo2go/common"
 )
 
 // A PriorityQueue implements heap.Interface and holds Items.

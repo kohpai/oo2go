@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/kohpai/oo2go/model/common"
-	"github.com/kohpai/oo2go/model/pq"
+	"github.com/kohpai/oo2go/common"
+	"github.com/kohpai/oo2go/pq"
 )
 
 type JointCourse struct {

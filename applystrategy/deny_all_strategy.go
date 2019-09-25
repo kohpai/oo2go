@@ -3,8 +3,8 @@ package applystrategy
 import (
 	"container/heap"
 
-	"github.com/kohpai/oo2go/model/common"
-	"github.com/kohpai/oo2go/model/course"
+	"github.com/kohpai/oo2go/common"
+	"github.com/kohpai/oo2go/course"
 )
 
 type DenyAllStrategy struct {

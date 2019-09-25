@@ -3,7 +3,7 @@ package rankedstudent
 import (
 	"fmt"
 
-	"github.com/kohpai/oo2go/model/common"
+	"github.com/kohpai/oo2go/common"
 )
 
 type RankedStudent struct {

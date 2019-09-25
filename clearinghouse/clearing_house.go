@@ -3,7 +3,7 @@ package clearinghouse
 import (
 	"fmt"
 
-	st "github.com/kohpai/oo2go/model/student"
+	st "github.com/kohpai/oo2go/student"
 )
 
 type ClearingHouse struct {
