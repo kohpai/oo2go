@@ -1,11 +1,10 @@
 package course
 
-import "fmt"
+import (
+	"fmt"
 
-type Student interface {
-	CitizenId() string
-	SetCourse(*Course)
-}
+	"github.com/kohpai/oo2go/common"
+)
 
 type RankCount map[int]int
 type Ranking map[string]int
@@ -45,7 +44,7 @@ func (course *Course) Ranking() Ranking {
 	return course.ranking
 }
 
-func (course *Course) Apply(student Student) bool {
+func (course *Course) Apply(student common.Student) bool {
 	_, ok := course.ranking[student.CitizenId()]
 	if !ok {
 		return false
