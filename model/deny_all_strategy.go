@@ -1,23 +1,20 @@
-package applystrategy
+package model
 
 import (
 	"container/heap"
-
-	"github.com/kohpai/oo2go/common"
-	"github.com/kohpai/oo2go/course"
 )
 
 type DenyAllStrategy struct {
 	BaseStrategy
 	leastReplicatedRank int
-	rankCount           course.RankCount
+	rankCount           RankCount
 }
 
 func (strategy *DenyAllStrategy) countBeingRemovedReplicas() int {
 	return strategy.countEdgeReplicas()
 }
 
-func (strategy *DenyAllStrategy) Apply(rankedStudent common.RankedStudent) bool {
+func (strategy *DenyAllStrategy) Apply(rankedStudent *RankedStudent) bool {
 	jc := strategy.jointCourse
 	pq := jc.Students()
 	rank := rankedStudent.Rank()
@@ -36,7 +33,7 @@ func (strategy *DenyAllStrategy) Apply(rankedStudent common.RankedStudent) bool 
 		return false
 	}
 
-	tmp := heap.Pop(pq).(common.RankedStudent)
+	tmp := heap.Pop(pq).(*RankedStudent)
 	heap.Push(pq, tmp)
 	lastRank := tmp.Rank()
 	if rank > lastRank {
@@ -47,11 +44,11 @@ func (strategy *DenyAllStrategy) Apply(rankedStudent common.RankedStudent) bool 
 	count := strategy.countBeingRemovedReplicas()
 	strategy.rankCount[lastRank], strategy.leastReplicatedRank = count, lastRank
 	if count > 0 {
-		rs := heap.Pop(pq).(common.RankedStudent)
+		rs := heap.Pop(pq).(*RankedStudent)
 		rs.Student().ClearCourse()
 	}
 	for i := 1; i < count; i++ {
-		rs := heap.Pop(pq).(common.RankedStudent)
+		rs := heap.Pop(pq).(*RankedStudent)
 		rs.Student().ClearCourse()
 		jc.IncSpots()
 	}

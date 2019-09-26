@@ -1,30 +1,27 @@
-package jointcourse
+package model
 
 import (
 	"container/heap"
 	"fmt"
 	"log"
-
-	"github.com/kohpai/oo2go/common"
-	"github.com/kohpai/oo2go/pq"
 )
 
 type JointCourse struct {
 	id             string
 	limit          int
 	availableSpots int
-	courses        []common.Course
-	students       common.PriorityQueue
-	strategy       common.ApplyStrategy
+	courses        []*Course
+	students       *PriorityQueue
+	strategy       ApplyStrategy
 }
 
 func NewJointCourse(
 	id string,
 	availableSpots int,
-	strategy common.ApplyStrategy,
+	strategy ApplyStrategy,
 ) *JointCourse {
-	courses := make([]common.Course, 0)
-	queue := pq.NewPriorityQueue([]common.RankedStudent{})
+	courses := make([]*Course, 0)
+	queue := NewPriorityQueue([]*RankedStudent{})
 	heap.Init(queue)
 
 	jointCourse := &JointCourse{
@@ -52,11 +49,11 @@ func (jointCourse *JointCourse) AvailableSpots() int {
 	return jointCourse.availableSpots
 }
 
-func (jointCourse *JointCourse) Courses() []common.Course {
+func (jointCourse *JointCourse) Courses() []*Course {
 	return jointCourse.courses
 }
 
-func (jointCourse *JointCourse) Students() common.PriorityQueue {
+func (jointCourse *JointCourse) Students() *PriorityQueue {
 	return jointCourse.students
 }
 
@@ -64,7 +61,7 @@ func (jointCourse *JointCourse) IsFull() bool {
 	return jointCourse.availableSpots == 0
 }
 
-func (jointCourse *JointCourse) RegisterCourse(course common.Course) {
+func (jointCourse *JointCourse) RegisterCourse(course *Course) {
 	jointCourse.courses = append(jointCourse.courses, course)
 }
 
@@ -96,7 +93,7 @@ func (jointCourse *JointCourse) DecSpots() {
 	}
 }
 
-func (jointCourse *JointCourse) Apply(rankedStudent common.RankedStudent) bool {
+func (jointCourse *JointCourse) Apply(rankedStudent *RankedStudent) bool {
 	if jointCourse.limit == 0 {
 		return false
 	}

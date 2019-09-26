@@ -1,16 +1,13 @@
-package applystrategy
+package model
 
 import (
 	"container/heap"
-
-	"github.com/kohpai/oo2go/common"
-	"github.com/kohpai/oo2go/course"
 )
 
 type AllowSomeStrategy struct {
 	BaseStrategy
 	leastReplicatedRank int
-	rankCount           course.RankCount
+	rankCount           RankCount
 	exceedLimit         int
 }
 
@@ -31,7 +28,7 @@ func (strategy *AllowSomeStrategy) countBeingRemovedReplicas() (int, int) {
 	return 0, 0
 }
 
-func (strategy *AllowSomeStrategy) Apply(rankedStudent common.RankedStudent) bool {
+func (strategy *AllowSomeStrategy) Apply(rankedStudent *RankedStudent) bool {
 	jc := strategy.jointCourse
 	pq := jc.Students()
 	rank := rankedStudent.Rank()
@@ -50,7 +47,7 @@ func (strategy *AllowSomeStrategy) Apply(rankedStudent common.RankedStudent) boo
 		return false
 	}
 
-	tmp := heap.Pop(pq).(common.RankedStudent)
+	tmp := heap.Pop(pq).(*RankedStudent)
 	heap.Push(pq, tmp)
 	lastRank := tmp.Rank()
 	if rank > lastRank {
@@ -66,7 +63,7 @@ func (strategy *AllowSomeStrategy) Apply(rankedStudent common.RankedStudent) boo
 	}
 
 	for i := 0; i < count; i++ {
-		rs := heap.Pop(pq).(common.RankedStudent)
+		rs := heap.Pop(pq).(*RankedStudent)
 		rs.Student().ClearCourse()
 	}
 	for i := 0; i < inc; i++ {

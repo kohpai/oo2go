@@ -1,18 +1,16 @@
-package rankedstudent
+package model
 
 import (
 	"fmt"
-
-	"github.com/kohpai/oo2go/common"
 )
 
 type RankedStudent struct {
-	student common.Student
+	student *Student
 	rank    int
 	index   int
 }
 
-func NewRankedStudent(student common.Student, rank, index int) *RankedStudent {
+func NewRankedStudent(student *Student, rank, index int) *RankedStudent {
 	return &RankedStudent{
 		student,
 		rank,
@@ -24,7 +22,7 @@ func (rs *RankedStudent) SetIndex(index int) {
 	rs.index = index
 }
 
-func (rs *RankedStudent) Student() common.Student {
+func (rs *RankedStudent) Student() *Student {
 	return rs.student
 }
 

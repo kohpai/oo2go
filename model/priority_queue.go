@@ -1,15 +1,11 @@
-package pq
-
-import (
-	"github.com/kohpai/oo2go/common"
-)
+package model
 
 // A PriorityQueue implements heap.Interface and holds Items.
 type PriorityQueue struct {
-	students []common.RankedStudent
+	students []*RankedStudent
 }
 
-func NewPriorityQueue(students []common.RankedStudent) common.PriorityQueue {
+func NewPriorityQueue(students []*RankedStudent) *PriorityQueue {
 	return &PriorityQueue{
 		students,
 	}
@@ -33,7 +29,7 @@ func (pq *PriorityQueue) Swap(i, j int) {
 func (pq *PriorityQueue) Push(x interface{}) {
 	students := pq.students
 	n := len(students)
-	item := x.(common.RankedStudent)
+	item := x.(*RankedStudent)
 	item.SetIndex(n)
 	pq.students = append(students, item)
 }
@@ -47,6 +43,6 @@ func (pq *PriorityQueue) Pop() interface{} {
 	return item
 }
 
-func (pq *PriorityQueue) Students() []common.RankedStudent {
+func (pq *PriorityQueue) Students() []*RankedStudent {
 	return pq.students
 }

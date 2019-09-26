@@ -1,25 +1,23 @@
-package course
+package model
 
 import (
 	"fmt"
-
-	"github.com/kohpai/oo2go/common"
-	rs "github.com/kohpai/oo2go/rankedstudent"
 )
 
 type RankCount map[int]int
+type Ranking map[string]int
 
 type Course struct {
 	id          string
 	isFull      bool
-	ranking     common.Ranking
-	jointCourse common.JointCourse
+	ranking     Ranking
+	jointCourse *JointCourse
 }
 
 func NewCourse(
 	id string,
-	jointCourse common.JointCourse,
-	ranking common.Ranking,
+	jointCourse *JointCourse,
+	ranking Ranking,
 ) *Course {
 	isFull := jointCourse.AvailableSpots() == 0
 	course := &Course{
@@ -45,15 +43,15 @@ func (course *Course) SetIsFull(isFull bool) {
 	course.isFull = isFull
 }
 
-func (course *Course) JointCourse() common.JointCourse {
+func (course *Course) JointCourse() *JointCourse {
 	return course.jointCourse
 }
 
-func (course *Course) Ranking() common.Ranking {
+func (course *Course) Ranking() Ranking {
 	return course.ranking
 }
 
-func (course *Course) Apply(student common.Student) bool {
+func (course *Course) Apply(student *Student) bool {
 	if course.jointCourse.Limit() == 0 {
 		return false
 	}
@@ -63,7 +61,7 @@ func (course *Course) Apply(student common.Student) bool {
 		return false
 	}
 
-	rankedStudent := rs.NewRankedStudent(student, rank, 0)
+	rankedStudent := NewRankedStudent(student, rank, 0)
 
 	if !course.jointCourse.Apply(rankedStudent) {
 		return false

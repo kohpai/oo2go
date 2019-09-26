@@ -1,40 +1,38 @@
-package clearinghouse
+package model
 
 import (
 	"fmt"
-
-	st "github.com/kohpai/oo2go/student"
 )
 
 type ClearingHouse struct {
-	students         []*st.Student
-	acceptedStudents []*st.Student
-	rejectedStudents []*st.Student
+	students         []*Student
+	acceptedStudents []*Student
+	rejectedStudents []*Student
 }
 
-func NewClearingHouse(students []*st.Student) *ClearingHouse {
-	as, rs := make([]*st.Student, 0), make([]*st.Student, 0)
+func NewClearingHouse(students []*Student) *ClearingHouse {
+	as, rs := make([]*Student, 0), make([]*Student, 0)
 	return &ClearingHouse{
 		students, as, rs,
 	}
 }
 
-func (ch *ClearingHouse) Students() []*st.Student {
+func (ch *ClearingHouse) Students() []*Student {
 	return ch.students
 }
 
-func (ch *ClearingHouse) AcceptedStudents() []*st.Student {
+func (ch *ClearingHouse) AcceptedStudents() []*Student {
 	return ch.acceptedStudents
 }
 
-func (ch *ClearingHouse) RejectedStudents() []*st.Student {
+func (ch *ClearingHouse) RejectedStudents() []*Student {
 	return ch.rejectedStudents
 }
 
 func (ch *ClearingHouse) Execute() {
 	ch.executePending()
 
-	statuses := st.ApplicationStatuses()
+	statuses := ApplicationStatuses()
 	for _, student := range ch.students {
 		switch student.ApplicationStatus() {
 		case statuses.Accepted():
@@ -46,7 +44,7 @@ func (ch *ClearingHouse) Execute() {
 }
 
 func (ch *ClearingHouse) executePending() {
-	statuses := st.ApplicationStatuses()
+	statuses := ApplicationStatuses()
 	isPending := true
 	for isPending {
 		for _, student := range ch.students {

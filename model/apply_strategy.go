@@ -1,27 +1,24 @@
-package applystrategy
+package model
 
 import (
 	"container/heap"
-
-	"github.com/kohpai/oo2go/common"
-	"github.com/kohpai/oo2go/course"
 )
 
 type ApplyStrategy interface {
-	SetJointCourse(common.JointCourse)
-	Apply(common.RankedStudent) bool
+	SetJointCourse(*JointCourse)
+	Apply(*RankedStudent) bool
 }
 
 type BaseStrategy struct {
-	jointCourse common.JointCourse
+	jointCourse *JointCourse
 }
 
-func NewApplyStrategy(condition course.Condition, exceedLimit int) ApplyStrategy {
+func NewApplyStrategy(condition Condition, exceedLimit int) ApplyStrategy {
 	base := BaseStrategy{
 		nil,
 	}
 
-	conditions := course.Conditions()
+	conditions := Conditions()
 
 	switch condition {
 	case conditions.AllowAll():
@@ -32,13 +29,13 @@ func NewApplyStrategy(condition course.Condition, exceedLimit int) ApplyStrategy
 		return &DenyAllStrategy{
 			base,
 			0,
-			make(course.RankCount),
+			make(RankCount),
 		}
 	case conditions.AllowSome():
 		return &AllowSomeStrategy{
 			base,
 			0,
-			make(course.RankCount),
+			make(RankCount),
 			exceedLimit,
 		}
 	}
@@ -46,11 +43,11 @@ func NewApplyStrategy(condition course.Condition, exceedLimit int) ApplyStrategy
 	return &base
 }
 
-func (strategy *BaseStrategy) SetJointCourse(jc common.JointCourse) {
+func (strategy *BaseStrategy) SetJointCourse(jc *JointCourse) {
 	strategy.jointCourse = jc
 }
 
-func (strategy *BaseStrategy) Apply(rankedStudent common.RankedStudent) bool {
+func (strategy *BaseStrategy) Apply(rankedStudent *RankedStudent) bool {
 	jc := strategy.jointCourse
 	pq := jc.Students()
 
@@ -61,18 +58,18 @@ func (strategy *BaseStrategy) Apply(rankedStudent common.RankedStudent) bool {
 	}
 
 	heap.Push(pq, rankedStudent)
-	rs := heap.Pop(pq).(common.RankedStudent)
+	rs := heap.Pop(pq).(*RankedStudent)
 	rs.Student().ClearCourse()
 	return rankedStudent != rs
 }
 
 func (strategy *BaseStrategy) countEdgeReplicas() int {
 	pq := strategy.jointCourse.Students()
-	students := []common.RankedStudent{
-		heap.Pop(pq).(common.RankedStudent),
+	students := []*RankedStudent{
+		heap.Pop(pq).(*RankedStudent),
 	}
 	count, rank := 0, students[0].Rank()
-	for ; students[count].Rank() == rank; students = append(students, heap.Pop(pq).(common.RankedStudent)) {
+	for ; students[count].Rank() == rank; students = append(students, heap.Pop(pq).(*RankedStudent)) {
 		count++
 		if pq.Len() < 1 {
 			break
