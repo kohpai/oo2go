@@ -3,14 +3,16 @@ package student
 import (
 	"errors"
 	"fmt"
-
-	"github.com/kohpai/oo2go/course"
 )
+
+type Course interface {
+	Apply(*Student) bool
+}
 
 type Student struct {
 	citizenId         string
 	applicationStatus ApplicationStatus
-	preferredCourses  [6]*course.Course
+	preferredCourses  [6]Course
 	courseIndex       int
 }
 
@@ -23,7 +25,7 @@ func NewStudent(citizenId string) *Student {
 }
 
 // Set the course to which the student is accepted
-func (student *Student) SetCourse(course *course.Course) {
+func (student *Student) SetCourse(course Course) {
 	for i, c := range student.preferredCourses {
 		if c == course {
 			student.courseIndex = i
@@ -47,7 +49,7 @@ func (student *Student) ApplicationStatus() ApplicationStatus {
 	return student.applicationStatus
 }
 
-func (student *Student) PreferredCourse(priority int) (*course.Course, error) {
+func (student *Student) PreferredCourse(priority int) (Course, error) {
 	if priority < 1 || 6 < priority {
 		return nil, errors.New("priority out of range")
 	}
@@ -59,7 +61,7 @@ func (student *Student) CourseIndex() int {
 	return student.courseIndex
 }
 
-func (student *Student) SetPreferredCourse(priority int, course *course.Course) error {
+func (student *Student) SetPreferredCourse(priority int, course Course) error {
 	if priority < 1 || 6 < priority {
 		return errors.New("priority out of range")
 	}
